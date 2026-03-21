@@ -33,6 +33,34 @@ body {
   overflow-x: hidden;
 }
 
+.section-padding {
+  padding: 8rem 0;
+}
+
+.how-it-works {
+  background: linear-gradient(var(--bg-dark), var(--bg-darker));
+}
+
+.beta-section {
+  background: var(--bg-darker);
+  text-align: center;
+}
+
+.cta-final {
+  text-align: center;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.05), transparent);
+}
+
+.cta-final h2 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.cta-final p {
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
 /* Base Styles */
 h1, h2, h3 {
   font-weight: 800;
@@ -90,6 +118,10 @@ p {
   color: var(--accent-purple);
 }
 
+.cta-group .btn-outline {
+  margin-left: 1rem;
+}
+
 .btn-outline:hover {
   background: var(--accent-purple);
   color: white;
@@ -119,33 +151,42 @@ p {
 /* Responsive adjustments */
 @media (max-width: 992px) {
   .hero h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 768px) {
+  nav {
+    padding: 0.75rem 0;
+  }
+
   .nav-logo {
-    display: none; /* Esconde logo da nav no mobile para não duplicar com o da Hero */
+    display: none;
   }
 
   .scrolled .nav-logo {
-    display: flex; /* Mostra o logo da nav quando o usuário rolar a página */
+    display: flex;
   }
 
+  .hero {
+    padding-top: 120px; /* Garante que o Navbar não cubra o título */
+    min-height: auto;
+    padding-bottom: 4rem;
+  }
+
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.6rem !important; }
+  h3 { font-size: 1.3rem !important; }
+  
   h1, h2 {
     line-height: 1.2;
   }
 
-  .hero h1 {
-    font-size: 2rem;
-    padding: 0 0.5rem;
-    margin-bottom: 2rem;
-  }
-  
   .hero p {
     font-size: 1rem;
     padding: 0 1rem;
     line-height: 1.5;
+    margin-bottom: 2rem;
   }
   
   .nav-links {
@@ -153,7 +194,15 @@ p {
   }
 
   .features {
-    padding: 4rem 0;
+    padding: 0;
+  }
+
+  .section-padding {
+    padding: 4rem 0 !important;
+  }
+
+  .features-grid {
+    margin-top: 2rem;
   }
 
   .feature-card {
@@ -166,34 +215,45 @@ p {
     gap: 1rem;
     align-items: center;
     width: 100%;
+    padding: 0 1rem;
+  }
+
+  .cta-group .btn-outline {
+    margin-left: 0 !important;
   }
 
   .btn {
     width: 100%;
-    max-width: 280px;
-    padding: 0.8rem 1.5rem;
+    max-width: 300px;
+    padding: 1rem 1.5rem;
+    text-align: center;
   }
 
-  .btn-outline {
-    margin-left: 0 !important;
+  .beta-section {
+    padding: 4rem 0 !important;
   }
 
   .beta-section h2 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+  }
+
+  .cta-final {
+    padding: 6rem 0 !important;
   }
 
   .cta-final h2 {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
   }
 }
 
 @media (max-width: 480px) {
   .hero h1 {
-    font-size: 1.75rem;
+    font-size: 1.7rem !important;
   }
   
   .logo-hero {
-    transform: scale(1.1) !important;
+    transform: scale(1) !important;
+    margin-bottom: 1.5rem !important;
   }
 
   .container {
