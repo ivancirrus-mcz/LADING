@@ -112,25 +112,75 @@ p {
 .delay-2 { animation-delay: 0.4s; }
 .delay-3 { animation-delay: 0.6s; }
 
+.logo-hero {
+  transform: scale(1.5);
+}
+
 /* Responsive adjustments */
+@media (max-width: 992px) {
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.5rem;
   }
   
   .hero p {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    padding: 0 1rem;
   }
   
   .nav-links {
-    display: none; /* Simplificação para versão mobile básica */
+    display: none;
   }
 
   .features {
     padding: 4rem 0;
   }
 
-  .cta-final h2 {
+  .feature-card {
+    padding: 1.5rem;
+  }
+
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+
+  .btn-outline {
+    margin-left: 0 !important;
+  }
+
+  .beta-section h2 {
     font-size: 2rem;
+  }
+
+  .cta-final h2 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2.1rem;
+  }
+  
+  .logo-hero {
+    transform: scale(1.2) !important;
+  }
+
+  .container {
+    padding: 0 1.25rem;
   }
 }
