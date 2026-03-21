@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FESTAPRINT | Automação de Artes e Impressão</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;800&family=JetBrains+Mono:wght@300;500&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="logo.css">
+
+    <style>
+        /* Hero Section Specifics */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.1), transparent),
+                radial-gradient(circle at bottom left, rgba(45, 212, 191, 0.1), transparent);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, var(--accent-teal), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-graphics {
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+        }
+
+        .circle-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-teal);
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .features {
+            padding: 8rem 0;
+            background-color: var(--bg-darker);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            padding: 2.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-teal);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero-graphics">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+    </div>
+
+    <nav id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo-container">
+                <span class="logo-festa">FESTA</span>
+                <span class="logo-print">print</span>
+                <span class="logo-cursor">_</span>
+            </a>
+            <div class="nav-links">
+                <a href="#beta" class="btn btn-outline">Participar do Beta</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="logo-container reveal"
+                style="justify-content: center; transform: scale(1.5); margin-bottom: 2rem;">
+                <span class="logo-festa">FESTA</span>
+                <span class="logo-print">print</span>
+                <span class="logo-cursor">_</span>
+            </div>
+            <h1 class="reveal delay-1">A Automação Inteligente para sua <span>loja no Marketplace</span></h1>
+            <p class="reveal delay-2">Automatize todo o processo dos seus anúncios de papelaria personalizada nos marketplaces. Do pedido à impressão, o sistema cuida da inclusão do nome e idade na arte das caixinhas e outros personalizados automaticamente — dispensando o uso de Silhouette Studio, Photoshop, Corel ou Canva.</p>
+            <div class="cta-group reveal delay-3">
+                <a href="#beta" class="btn btn-primary">Quero Participar do Beta</a>
+                <a href="#saiba-mais" class="btn btn-outline" style="margin-left: 1rem;">Saiba Mais</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="features" id="saiba-mais">
+        <div class="container">
+            <h2 class="reveal" style="text-align: center; font-size: 2.5rem;">Sua papelaria no <span>piloto
+                    automático</span></h2>
+            <div class="features-grid">
+                <div class="feature-card glass reveal delay-1">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Artes Instantâneas</h3>
+                    <p>Gere layouts personalizados automaticamente com base nos dados do cliente. Chega de trabalho
+                        manual repetitivo no Corel ou Canva.</p>
+                </div>
+                <div class="feature-card glass reveal delay-2">
+                    <div class="feature-icon">🖨️</div>
+                    <h3>Fila de Impressão</h3>
+                    <p>Gerenciamento inteligente de arquivos para impressão. Otimize o papel e reduza drasticamente o
+                        desperdício de insumos.</p>
+                </div>
+                <div class="feature-card glass reveal delay-3">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Fluxo Automatizado</h3>
+                    <p>Desde o pedido até a entrega. Um ecossistema completo que trabalha por você 24 horas por dia, 7
+                        dias por semana.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works"
+        style="padding: 8rem 0; background: linear-gradient(var(--bg-dark), var(--bg-darker));">
+        <div class="container">
+            <h2 class="reveal" style="text-align: center; font-size: 2.5rem; margin-bottom: 4rem;">Como funciona?</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+                <div class="step glass reveal delay-1"
+                    style="flex: 1; min-width: 250px; padding: 2rem; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-teal); margin-bottom: 1rem;">01
+                    </div>
+                    <h4 style="margin-bottom: 1rem;">Conecte sua Loja</h4>
+                    <p>Integração fácil com as principais plataformas de venda.</p>
+                </div>
+                <div class="step glass reveal delay-2"
+                    style="flex: 1; min-width: 250px; padding: 2rem; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-purple); margin-bottom: 1rem;">
+                        02</div>
+                    <h4 style="margin-bottom: 1rem;">Escolha o Template</h4>
+                    <p>Nossa IA adapta sua arte aos dados do pedido automaticamente.</p>
+                </div>
+                <div class="step glass reveal delay-3"
+                    style="flex: 1; min-width: 250px; padding: 2rem; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: var(--accent-teal); margin-bottom: 1rem;">03
+                    </div>
+                    <h4 style="margin-bottom: 1rem;">Pronto para Imprimir</h4>
+                    <p>Receba o PDF otimizado direto na sua fila de produção.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="beta-section" id="beta" style="padding: 8rem 0; background: var(--bg-darker); text-align: center;">
+        <div class="container">
+            <div class="glass" style="padding: 4rem 2rem; max-width: 800px; margin: 0 auto; border: 1px solid var(--accent-teal);">
+                <h2 class="reveal" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Seja um Pioneiro no <span>FESTAPRINT</span></h2>
+                <p class="reveal delay-1" style="margin-bottom: 3rem; color: var(--text-primary);">Estamos selecionando um grupo exclusivo de donas de papelaria para testar nossa automação antes de todo mundo. Preencha o formulário oficial para garantir sua vaga.</p>
+                <a href="https://forms.gle/Pswbnb9zG7okE3cL9" target="_blank" class="btn btn-primary reveal delay-2" style="font-size: 1.25rem; padding: 1.5rem 4rem;">Preencher Formulário de Inscrição</a>
+                <p class="reveal delay-3" style="margin-top: 2rem; font-size: 0.875rem; opacity: 0.7;">* Vagas limitadas para a primeira fase do Beta.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final"
+        style="padding: 10rem 0; text-align: center; background: radial-gradient(circle, rgba(45, 212, 191, 0.05), transparent);">
+        <div class="container">
+            <h2 class="reveal" style="font-size: 3rem; margin-bottom: 2rem;">Pronta para escalar seu negócio?</h2>
+            <p class="reveal delay-1" style="max-width: 700px; margin: 0 auto 3rem;">Junte-se a centenas de
+                empreendedoras que já transformaram suas papelarias com a FESTAPRINT.</p>
+            <a href="#beta" class="btn btn-primary reveal delay-2"
+                style="font-size: 1.1rem; padding: 1.25rem 3rem;">Garantir Minha Vaga no Beta</a>
+        </div>
+    </section>
+
+    <footer
+        style="padding: 6rem 0; border-top: 1px solid var(--glass-border); text-align: center; background: var(--bg-darker);">
+        <div class="container">
+            <div class="logo-container" style="justify-content: center; font-size: 1.5rem; margin-bottom: 2rem;">
+                <span class="logo-festa">FESTA</span>
+                <span class="logo-print">print</span>
+                <span class="logo-cursor">_</span>
+            </div>
+            <div style="margin-bottom: 2rem; display: flex; justify-content: center; gap: 2rem;">
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Privacidade</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Termos de Uso</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Suporte</a>
+            </div>
+            <p style="font-size: 0.875rem;">&copy; 2026 FESTAPRINT Automation. Desenvolvido para papelaria criativa.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+
+</html>

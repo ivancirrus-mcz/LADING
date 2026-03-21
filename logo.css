@@ -1,0 +1,40 @@
+/* logo.css - Logo specific styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.logo-festa {
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #f8fafc; /* Slate 50 */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logo-print {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 300;
+  color: #2dd4bf; /* Teal 400 */
+  margin-left: 0.25rem;
+}
+
+.logo-cursor {
+  font-family: 'JetBrains Mono', monospace;
+  color: #a855f7; /* Purple 500 */
+  margin-left: 0.125rem;
+  animation: logo-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes logo-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* Scroll header logo scaling */
+.header-small .logo-container {
+  font-size: 1.5rem;
+}
