@@ -97,6 +97,20 @@
       </a>
       <div class="nav-links">
         <a href="#como-funciona" class="btn btn-outline" style="padding:0.6rem 1.25rem;">Como Funciona</a>
+        <!-- Suporte dropdown -->
+        <div class="nav-dropdown" id="suporteDropdown">
+          <button class="btn btn-outline nav-dropdown-btn" style="padding:0.6rem 1.25rem;" onclick="toggleDropdown()">
+            Suporte <span class="dropdown-arrow">▾</span>
+          </button>
+          <div class="nav-dropdown-menu" id="dropdownMenu">
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener">
+              <span>💬</span> WhatsApp
+            </a>
+            <a href="mailto:suporte@festaprint.com.br">
+              <span>✉️</span> E-mail
+            </a>
+          </div>
+        </div>
         <a href="https://app.festaprint.com.br/login" class="btn btn-outline" style="padding:0.6rem 1.25rem;">Entrar</a>
         <a href="https://app.festaprint.com.br/register" class="btn btn-primary" style="padding:0.6rem 1.5rem;">Começar Grátis</a>
       </div>
@@ -375,7 +389,52 @@
     </div>
   </footer>
 
+  <style>
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn { cursor: pointer; background: transparent; font-family: inherit; display: flex; align-items: center; gap: 0.375rem; }
+    .dropdown-arrow { font-size: 0.6rem; transition: transform 0.2s; }
+    .nav-dropdown.open .dropdown-arrow { transform: rotate(180deg); }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      border: 1px solid rgba(148,163,184,0.12);
+      border-radius: 0.875rem;
+      padding: 0.5rem;
+      min-width: 180px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+      z-index: 200;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: flex; flex-direction: column; gap: 0.125rem; }
+    .nav-dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 0.625rem 0.875rem;
+      border-radius: 0.625rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .nav-dropdown-menu a:hover { background: rgba(14,165,233,0.1); color: #e2e8f0; }
+  </style>
+
   <script>
+    function toggleDropdown() {
+      document.getElementById('suporteDropdown').classList.toggle('open')
+    }
+    document.addEventListener('click', function(e) {
+      const d = document.getElementById('suporteDropdown')
+      if (!d.contains(e.target)) d.classList.remove('open')
+    })
+
     // Nav scroll
     window.addEventListener('scroll', function () {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50)
