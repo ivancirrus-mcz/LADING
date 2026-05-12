@@ -97,6 +97,7 @@
       </a>
       <div class="nav-links">
         <a href="#como-funciona" class="btn btn-outline" style="padding:0.6rem 1.25rem;">Como Funciona</a>
+        <a href="#precos" class="btn btn-outline" style="padding:0.6rem 1.25rem;">Preços</a>
         <!-- Suporte dropdown -->
         <div class="nav-dropdown" id="suporteDropdown">
           <button class="btn btn-outline nav-dropdown-btn" style="padding:0.6rem 1.25rem;" onclick="toggleDropdown()">
@@ -354,6 +355,226 @@
       </div>
     </div>
   </section>
+
+  <!-- Preços -->
+  <section id="precos" class="section-padding" style="border-top:1px solid rgba(148,163,184,0.08);">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:4rem;">
+        <div class="section-label reveal">Planos</div>
+        <h2 class="reveal delay-1" style="font-size:3rem;text-transform:uppercase;margin-bottom:1rem;">Simples e transparente.</h2>
+        <p class="reveal delay-2" style="max-width:480px;margin:0 auto;font-size:1rem;line-height:1.7;">
+          Escolha o plano ideal para o volume do seu negócio.<br>Cancele quando quiser.
+        </p>
+      </div>
+
+      <!-- Skeleton exibido enquanto carrega -->
+      <div id="plans-skeleton" class="grid-3" style="margin-bottom:2rem;">
+        <div class="glass" style="padding:2.5rem;border-radius:1.5rem;opacity:0.4;animation:pulse 1.5s ease-in-out infinite;">
+          <div style="height:12px;width:60%;background:#1e293b;border-radius:6px;margin-bottom:1.5rem;"></div>
+          <div style="height:40px;width:80%;background:#1e293b;border-radius:6px;margin-bottom:1rem;"></div>
+          <div style="height:10px;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:75%;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:85%;background:#1e293b;border-radius:6px;margin-bottom:2rem;"></div>
+          <div style="height:48px;background:#1e293b;border-radius:0.875rem;"></div>
+        </div>
+        <div class="glass" style="padding:2.5rem;border-radius:1.5rem;opacity:0.4;animation:pulse 1.5s ease-in-out 0.2s infinite;">
+          <div style="height:12px;width:60%;background:#1e293b;border-radius:6px;margin-bottom:1.5rem;"></div>
+          <div style="height:40px;width:80%;background:#1e293b;border-radius:6px;margin-bottom:1rem;"></div>
+          <div style="height:10px;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:75%;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:85%;background:#1e293b;border-radius:6px;margin-bottom:2rem;"></div>
+          <div style="height:48px;background:#1e293b;border-radius:0.875rem;"></div>
+        </div>
+        <div class="glass" style="padding:2.5rem;border-radius:1.5rem;opacity:0.4;animation:pulse 1.5s ease-in-out 0.4s infinite;">
+          <div style="height:12px;width:60%;background:#1e293b;border-radius:6px;margin-bottom:1.5rem;"></div>
+          <div style="height:40px;width:80%;background:#1e293b;border-radius:6px;margin-bottom:1rem;"></div>
+          <div style="height:10px;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:75%;background:#1e293b;border-radius:6px;margin-bottom:0.75rem;"></div>
+          <div style="height:10px;width:85%;background:#1e293b;border-radius:6px;margin-bottom:2rem;"></div>
+          <div style="height:48px;background:#1e293b;border-radius:0.875rem;"></div>
+        </div>
+      </div>
+
+      <!-- Cards gerados dinamicamente -->
+      <div id="plans-grid" class="grid-3" style="display:none;margin-bottom:2rem;"></div>
+
+      <!-- Erro de carregamento -->
+      <div id="plans-error" style="display:none;text-align:center;padding:3rem;">
+        <p style="color:#64748b;font-size:0.875rem;">Não foi possível carregar os planos. <a href="https://app.festaprint.com.br/register" style="color:#0ea5e9;">Acesse o sistema</a> para ver os valores.</p>
+      </div>
+
+      <p class="reveal" style="text-align:center;font-size:9px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#334155;margin-top:2rem;">
+        Sem fidelidade · Cancele quando quiser · Suporte incluído
+      </p>
+    </div>
+  </section>
+
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 0.6; }
+    }
+    .plan-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+    .plan-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .plan-card.featured {
+      border-color: rgba(14,165,233,0.4);
+      background: rgba(14,165,233,0.04);
+      box-shadow: 0 0 0 1px rgba(14,165,233,0.15), 0 20px 50px rgba(14,165,233,0.08);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0ea5e9;
+      color: white;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 0 0 0.75rem 0.75rem;
+    }
+    .plan-name {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 1.25rem;
+    }
+    .plan-card.featured .plan-name { color: #0ea5e9; }
+    .plan-price {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #f8fafc;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.04em;
+    }
+    .plan-price span { font-size: 0.9rem; font-weight: 600; color: #64748b; }
+    .plan-period {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 1.75rem;
+    }
+    .plan-credits {
+      font-size: 0.9375rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(148,163,184,0.08);
+    }
+    .plan-credits strong { color: #0ea5e9; }
+    .plan-features {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex: 1;
+    }
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .plan-feature-icon { color: #0ea5e9; font-size: 0.75rem; flex-shrink: 0; }
+    .plan-annual {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #22c55e;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 9999px;
+      padding: 0.2rem 0.6rem;
+      display: inline-flex;
+      margin-bottom: 1.75rem;
+    }
+  </style>
+
+  <script>
+    (function loadPlans() {
+      var FEATURES = [
+        'Geração automática de arte',
+        'Fila de impressão',
+        'Todos os marketplaces',
+        'Suporte via WhatsApp',
+        'Múltiplos usuários',
+      ];
+
+      function fmt(price) {
+        return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
+      function renderCards(plans) {
+        var grid = document.getElementById('plans-grid');
+        var midIdx = Math.floor((plans.length - 1) / 2);
+        if (plans.length % 2 === 0) midIdx = plans.length / 2 - 1; // prefer second of 2
+
+        grid.innerHTML = plans.map(function(plan, i) {
+          var featured = (plans.length === 1) || (i === midIdx + (plans.length % 2 === 0 ? 1 : 0));
+          if (plans.length >= 3) featured = (i === 1);
+
+          var badgeHtml = featured ? '<div class="plan-badge">Mais popular</div>' : '';
+          var annualHtml = plan.annualDiscountPct > 0
+            ? '<div class="plan-annual">▼ ' + plan.annualDiscountPct + '% no plano anual</div>'
+            : '';
+          var credits = plan.monthlyTokens || plan.credits;
+          var featuresHtml = FEATURES.map(function(f) {
+            return '<div class="plan-feature"><span class="plan-feature-icon">✓</span>' + f + '</div>';
+          }).join('');
+
+          return '<div class="plan-card reveal' + (featured ? ' featured' : '') + '">' +
+            badgeHtml +
+            '<div class="plan-name">' + plan.name + '</div>' +
+            '<div class="plan-price">' + fmt(plan.price) + '<span>/mês</span></div>' +
+            '<div class="plan-period">cobrado mensalmente</div>' +
+            (annualHtml ? annualHtml : '') +
+            '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' créditos</strong> por mês</div>' +
+            '<div class="plan-features">' + featuresHtml + '</div>' +
+            '<a href="https://app.festaprint.com.br/register" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
+            'Começar agora →</a>' +
+            '</div>';
+        }).join('');
+
+        document.getElementById('plans-skeleton').style.display = 'none';
+        grid.style.display = '';
+
+        // anima cards novos
+        grid.querySelectorAll('.reveal').forEach(function(el) {
+          el.style.animationPlayState = 'running';
+        });
+      }
+
+      fetch('https://app.festaprint.com.br/api/public/plans')
+        .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function(plans) {
+          if (!plans || plans.length === 0) throw new Error('empty');
+          renderCards(plans);
+        })
+        .catch(function() {
+          document.getElementById('plans-skeleton').style.display = 'none';
+          document.getElementById('plans-error').style.display = '';
+        });
+    })();
+  </script>
 
   <!-- CTA Final -->
   <section class="section-padding" style="border-top:1px solid rgba(148,163,184,0.08);">
