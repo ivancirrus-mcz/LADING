@@ -549,7 +549,7 @@
             (annualHtml ? annualHtml : '') +
             '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' créditos</strong> por mês</div>' +
             '<div class="plan-features">' + featuresHtml + '</div>' +
-            '<a href="https://app.festaprint.com.br/register" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
+            '<a href="https://app.festaprint.com.br/subscribe?plan=' + plan.id + '" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
             'Começar agora →</a>' +
             '</div>';
         }).join('');
