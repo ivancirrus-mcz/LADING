@@ -563,6 +563,14 @@
         });
       }
 
+      // Planos de fallback (usados se a API não responder)
+      var FALLBACK_PLANS = [
+        { id: 'PLAN-BNEQH', name: 'PLANO INICIAL',       price: 60,   credits: 100,  monthlyTokens: 100,  annualDiscountPct: 0 },
+        { id: 'PLAN-ID4NK', name: 'PLANO AVANÇADO',      price: 250,  credits: 500,  monthlyTokens: 500,  annualDiscountPct: 0 },
+        { id: 'PLAN-437BS', name: 'PLANO PROFISSIONAL',  price: 450,  credits: 1000, monthlyTokens: 1000, annualDiscountPct: 0 },
+        { id: 'PLAN-44FB1', name: 'PLANO EMPRESARIAL',   price: 2000, credits: 5000, monthlyTokens: 5000, annualDiscountPct: 0 },
+      ];
+
       fetch('https://app.festaprint.com.br/api/public/plans')
         .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function(plans) {
@@ -570,8 +578,8 @@
           renderCards(plans);
         })
         .catch(function() {
-          document.getElementById('plans-skeleton').style.display = 'none';
-          document.getElementById('plans-error').style.display = '';
+          // Fallback: exibe planos conhecidos enquanto API não está disponível
+          renderCards(FALLBACK_PLANS);
         });
     })();
   </script>
