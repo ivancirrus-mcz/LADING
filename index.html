@@ -494,6 +494,26 @@
       color: #94a3b8;
     }
     .plan-feature-icon { color: #0ea5e9; font-size: 0.75rem; flex-shrink: 0; }
+    .plan-expiry {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .expiry-monthly {
+      color: #f59e0b;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.2);
+    }
+    .expiry-never {
+      color: #22c55e;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
+    }
     .plan-annual {
       font-size: 9px;
       font-weight: 800;
@@ -514,7 +534,6 @@
       var FEATURES = [
         'Geração automática de arte',
         'Fila de impressão',
-        'Todos os marketplaces',
         'Suporte via WhatsApp',
         'Múltiplos usuários',
       ];
@@ -525,32 +544,55 @@
 
       function renderCards(plans) {
         var grid = document.getElementById('plans-grid');
-        var midIdx = Math.floor((plans.length - 1) / 2);
-        if (plans.length % 2 === 0) midIdx = plans.length / 2 - 1; // prefer second of 2
 
-        grid.innerHTML = plans.map(function(plan, i) {
-          var featured = (plans.length === 1) || (i === midIdx + (plans.length % 2 === 0 ? 1 : 0));
-          if (plans.length >= 3) featured = (i === 1);
+        // Assinatura primeiro, avulsos (topup) no final
+        var subscription = plans.filter(function(p) { return p.type === 'subscription'; });
+        var topup        = plans.filter(function(p) { return p.type !== 'subscription'; });
+        var sorted = subscription.concat(topup);
+
+        // Card destaque = segundo plano de assinatura (ou o do meio se só houver 1)
+        var featuredIdx = subscription.length >= 2 ? 1 : 0;
+
+        grid.innerHTML = sorted.map(function(plan, i) {
+          var isSubscription = plan.type === 'subscription';
+          var featured = isSubscription && (i === featuredIdx);
 
           var badgeHtml = featured ? '<div class="plan-badge">Mais popular</div>' : '';
           var annualHtml = plan.annualDiscountPct > 0
             ? '<div class="plan-annual">▼ ' + plan.annualDiscountPct + '% no plano anual</div>'
             : '';
           var credits = plan.monthlyTokens || plan.credits;
-          var featuresHtml = FEATURES.map(function(f) {
-            return '<div class="plan-feature"><span class="plan-feature-icon">✓</span>' + f + '</div>';
-          }).join('');
+
+          // Expiração: assinatura expira ao fim do ciclo, avulso nunca expira
+          var expiryHtml = isSubscription
+            ? '<div class="plan-expiry expiry-monthly">⏱ Tokens expiram ao fim do ciclo mensal</div>'
+            : '<div class="plan-expiry expiry-never">∞ Tokens não expiram</div>';
+
+          // Features: assinatura tem lista completa, avulso é mais simples
+          var featuresHtml = isSubscription
+            ? FEATURES.map(function(f) {
+                return '<div class="plan-feature"><span class="plan-feature-icon">✓</span>' + f + '</div>';
+              }).join('')
+            : '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Geração automática de arte</div>' +
+              '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Fila de impressão</div>' +
+              '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Suporte via WhatsApp</div>';
+
+          var priceLabel = isSubscription ? '<span>/mês</span>' : '';
+          var periodHtml = isSubscription
+            ? '<div class="plan-period">cobrado mensalmente</div>'
+            : '<div class="plan-period">pagamento único</div>';
 
           return '<div class="plan-card reveal' + (featured ? ' featured' : '') + '">' +
             badgeHtml +
             '<div class="plan-name">' + plan.name + '</div>' +
-            '<div class="plan-price">' + fmt(plan.price) + '<span>/mês</span></div>' +
-            '<div class="plan-period">cobrado mensalmente</div>' +
+            '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>' +
+            periodHtml +
             (annualHtml ? annualHtml : '') +
-            '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' créditos</strong> por mês</div>' +
+            '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' tokens</strong>' + (isSubscription ? ' por mês' : ' avulsos') + '</div>' +
+            expiryHtml +
             '<div class="plan-features">' + featuresHtml + '</div>' +
             '<a href="https://app.festaprint.com.br/subscribe?plan=' + plan.id + '" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
-            'Começar agora →</a>' +
+            (isSubscription ? 'Assinar agora →' : 'Comprar tokens →') + '</a>' +
             '</div>';
         }).join('');
 
@@ -565,10 +607,12 @@
 
       // Planos de fallback (usados se a API não responder)
       var FALLBACK_PLANS = [
-        { id: 'PLAN-BNEQH', name: 'PLANO INICIAL',       price: 60,   credits: 100,  monthlyTokens: 100,  annualDiscountPct: 0 },
-        { id: 'PLAN-ID4NK', name: 'PLANO AVANÇADO',      price: 250,  credits: 500,  monthlyTokens: 500,  annualDiscountPct: 0 },
-        { id: 'PLAN-437BS', name: 'PLANO PROFISSIONAL',  price: 450,  credits: 1000, monthlyTokens: 1000, annualDiscountPct: 0 },
-        { id: 'PLAN-44FB1', name: 'PLANO EMPRESARIAL',   price: 2000, credits: 5000, monthlyTokens: 5000, annualDiscountPct: 0 },
+        { id: 'PLAN-BNEQH', name: 'PLANO INICIAL',      price: 60,   credits: 100,  monthlyTokens: 100,  annualDiscountPct: 0, type: 'subscription' },
+        { id: 'PLAN-ID4NK', name: 'PLANO AVANÇADO',     price: 250,  credits: 500,  monthlyTokens: 500,  annualDiscountPct: 0, type: 'subscription' },
+        { id: 'PLAN-437BS', name: 'PLANO PROFISSIONAL', price: 450,  credits: 1000, monthlyTokens: 1000, annualDiscountPct: 0, type: 'subscription' },
+        { id: 'PLAN-44FB1', name: 'PLANO EMPRESARIAL',  price: 2000, credits: 5000, monthlyTokens: 5000, annualDiscountPct: 0, type: 'subscription' },
+        { id: 'PLAN-3TYA5', name: '100 TOKENS',         price: 70,   credits: 100,  monthlyTokens: null, annualDiscountPct: 0, type: 'topup' },
+        { id: 'PLAN-FP88U', name: '500 TOKENS',         price: 300,  credits: 500,  monthlyTokens: null, annualDiscountPct: 0, type: 'topup' },
       ];
 
       fetch('https://app.festaprint.com.br/api/public/plans')
