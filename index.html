@@ -506,26 +506,6 @@
       color: #94a3b8;
     }
     .plan-feature-icon { color: #0ea5e9; font-size: 0.75rem; flex-shrink: 0; }
-    .plan-expiry {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-bottom: 1.25rem;
-    }
-    .expiry-monthly {
-      color: #f59e0b;
-      background: rgba(245,158,11,0.08);
-      border: 1px solid rgba(245,158,11,0.2);
-    }
-    .expiry-never {
-      color: #22c55e;
-      background: rgba(34,197,94,0.08);
-      border: 1px solid rgba(34,197,94,0.2);
-    }
     .plan-annual {
       font-size: 9px;
       font-weight: 800;
@@ -575,11 +555,6 @@
             : '';
           var credits = plan.monthlyTokens || plan.credits;
 
-          // Expiração: assinatura expira ao fim do ciclo, avulso nunca expira
-          var expiryHtml = isSubscription
-            ? '<div class="plan-expiry expiry-monthly">⏱ Tokens expiram ao fim do ciclo mensal</div>'
-            : '<div class="plan-expiry expiry-never">∞ Tokens não expiram</div>';
-
           // Features: assinatura tem lista completa, avulso é mais simples
           var featuresHtml = isSubscription
             ? FEATURES.map(function(f) {
@@ -600,8 +575,7 @@
             '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>' +
             periodHtml +
             (annualHtml ? annualHtml : '') +
-            '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' tokens</strong>' + (isSubscription ? ' por mês' : ' avulsos') + '</div>' +
-            expiryHtml +
+            '<div class="plan-credits">Até <strong>' + credits.toLocaleString('pt-BR') + ' pedidos</strong>' + (isSubscription ? ' por mês' : ' avulsos') + '</div>' +
             '<div class="plan-features">' + featuresHtml + '</div>' +
             '<a href="https://app.festaprint.com.br/subscribe?plan=' + plan.id + '" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
             (isSubscription ? 'Assinar agora →' : 'Comprar tokens →') + '</a>' +
@@ -623,8 +597,6 @@
         { id: 'PLAN-ID4NK', name: 'PLANO AVANÇADO',     price: 250,  credits: 500,  monthlyTokens: 500,  annualDiscountPct: 0, type: 'subscription' },
         { id: 'PLAN-437BS', name: 'PLANO PROFISSIONAL', price: 450,  credits: 1000, monthlyTokens: 1000, annualDiscountPct: 0, type: 'subscription' },
         { id: 'PLAN-44FB1', name: 'PLANO EMPRESARIAL',  price: 2000, credits: 5000, monthlyTokens: 5000, annualDiscountPct: 0, type: 'subscription' },
-        { id: 'PLAN-3TYA5', name: '100 TOKENS',         price: 70,   credits: 100,  monthlyTokens: null, annualDiscountPct: 0, type: 'topup' },
-        { id: 'PLAN-FP88U', name: '500 TOKENS',         price: 300,  credits: 500,  monthlyTokens: null, annualDiscountPct: 0, type: 'topup' },
       ];
 
       fetch('https://app.festaprint.com.br/api/public/plans')
