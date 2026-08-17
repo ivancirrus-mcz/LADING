@@ -519,6 +519,26 @@
       display: inline-flex;
       margin-bottom: 1.75rem;
     }
+    .plan-promo {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f59e0b;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 9999px;
+      padding: 0.2rem 0.6rem;
+      display: inline-flex;
+      margin-bottom: 0.75rem;
+    }
+    .plan-price-old {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #64748b;
+      text-decoration: line-through;
+      margin-right: 0.5rem;
+    }
   </style>
 
   <script>
@@ -532,6 +552,11 @@
 
       function fmt(price) {
         return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
+      function fmtShortDate(iso) {
+        var d = new Date(iso);
+        return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
       }
 
       function renderCards(plans) {
@@ -554,6 +579,10 @@
             ? '<div class="plan-annual">▼ ' + plan.annualDiscountPct + '% no plano anual</div>'
             : '';
           var credits = plan.monthlyTokens || plan.credits;
+          var promoActive = plan.promoActive === true;
+          var promoBadgeHtml = promoActive
+            ? '<div class="plan-promo">🔥 -' + plan.promoDiscountPct + '% até ' + fmtShortDate(plan.promoEndAt) + '</div>'
+            : '';
 
           // Features: assinatura tem lista completa, avulso é mais simples
           var featuresHtml = isSubscription
@@ -568,11 +597,15 @@
           var periodHtml = isSubscription
             ? '<div class="plan-period">cobrado mensalmente</div>'
             : '<div class="plan-period">pagamento único</div>';
+          var priceHtml = promoActive
+            ? '<div class="plan-price"><span class="plan-price-old">' + fmt(plan.price) + '</span>' + fmt(plan.price * (1 - plan.promoDiscountPct / 100)) + priceLabel + '</div>'
+            : '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>';
 
           return '<div class="plan-card reveal' + (featured ? ' featured' : '') + '">' +
             badgeHtml +
             '<div class="plan-name">' + plan.name + '</div>' +
-            '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>' +
+            promoBadgeHtml +
+            priceHtml +
             periodHtml +
             (annualHtml ? annualHtml : '') +
             '<div class="plan-credits">Até <strong>' + credits.toLocaleString('pt-BR') + ' pedidos</strong>' + (isSubscription ? ' por mês' : ' avulsos') + '</div>' +
