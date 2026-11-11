@@ -555,6 +555,18 @@
       justify-content: center;
     }
     #plans-grid.plans-few .plan-card { width: 100%; max-width: 360px; }
+    /* Plano único: card mais largo e recursos em duas colunas */
+    #plans-grid.plans-single .plan-card { max-width: 720px; }
+    #plans-grid.plans-single .plan-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1.5rem;
+      row-gap: 0.75rem;
+      align-content: start;
+    }
+    @media (max-width: 600px) {
+      #plans-grid.plans-single .plan-features { grid-template-columns: 1fr; }
+    }
     .plan-period {
       font-size: 0.75rem;
       font-weight: 700;
@@ -662,6 +674,7 @@
 
         // Com poucos cards, centraliza em vez de encostar à esquerda
         grid.classList.toggle('plans-few', sorted.length < 3);
+        grid.classList.toggle('plans-single', sorted.length === 1);
 
         grid.innerHTML = sorted.map(function(plan, i) {
           var isSubscription = plan.type === 'subscription';
