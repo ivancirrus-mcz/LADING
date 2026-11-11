@@ -93,8 +93,20 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="logo.css">
 
-  <!-- Crisp Chat -->
-  <script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="458f6111-776a-4992-9685-e1a514ea06fc";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>
+  <!-- Chat de suporte (Chatwoot, inbox "Site FestaPrint") -->
+  <script>
+    window.chatwootSettings = { locale: 'pt_BR', position: 'right', type: 'standard' };
+    (function(d,t) {
+      var BASE_URL = "https://suporte.festaprint.com.br";
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = BASE_URL + "/packs/js/sdk.js";
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function() {
+        window.chatwootSDK.run({ websiteToken: 'kMjwLwVwdt2br8pGQD5kyzYH', baseUrl: BASE_URL });
+      };
+    })(document, "script");
+  </script>
 </head>
 <body>
 
