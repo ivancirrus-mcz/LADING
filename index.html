@@ -521,6 +521,28 @@
       letter-spacing: -0.04em;
     }
     .plan-price span { font-size: 0.9rem; font-weight: 600; color: #64748b; }
+    .plan-price-old {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #475569;
+      text-decoration: line-through;
+      margin-bottom: 0.25rem;
+    }
+    .plan-promo {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #22c55e;
+      margin-bottom: 0.5rem;
+    }
+    /* Poucos planos: cards centralizados com largura fixa */
+    #plans-grid.plans-few {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #plans-grid.plans-few .plan-card { width: 100%; max-width: 360px; }
     .plan-period {
       font-size: 0.75rem;
       font-weight: 700;
@@ -552,6 +574,26 @@
       color: #94a3b8;
     }
     .plan-feature-icon { color: #0ea5e9; font-size: 0.75rem; flex-shrink: 0; }
+    .plan-expiry {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .expiry-monthly {
+      color: #f59e0b;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.2);
+    }
+    .expiry-never {
+      color: #22c55e;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
+    }
     .plan-annual {
       font-size: 9px;
       font-weight: 800;
@@ -565,44 +607,27 @@
       display: inline-flex;
       margin-bottom: 1.75rem;
     }
-    .plan-promo {
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #f59e0b;
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.25);
-      border-radius: 9999px;
-      padding: 0.2rem 0.6rem;
-      display: inline-flex;
-      margin-bottom: 0.75rem;
-    }
-    .plan-price-old {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #64748b;
-      text-decoration: line-through;
-      margin-right: 0.5rem;
-    }
   </style>
 
   <script>
     (function loadPlans() {
+      // Recursos incluídos na assinatura (refletem o sistema atual)
       var FEATURES = [
-        'Geração automática de arte',
-        'Fila de impressão',
-        'Suporte via WhatsApp',
+        'Integração com Shopee, Mercado Livre e TikTok Shop',
+        'Captura de nome e idade pelo chat (extensão)',
+        'Fila de impressão com agente local',
         'Múltiplos usuários',
+        'Suporte via WhatsApp',
       ];
+      // Itens extras exibidos só em plano ilimitado
+      var UNLIMITED_FEATURES = ['Geração de artes ilimitada'];
+
+      function featureHtml(f) {
+        return '<div class="plan-feature"><span class="plan-feature-icon">✓</span>' + f + '</div>';
+      }
 
       function fmt(price) {
         return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      }
-
-      function fmtShortDate(iso) {
-        var d = new Date(iso);
-        return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
       }
 
       function renderCards(plans) {
@@ -613,48 +638,73 @@
         var topup        = plans.filter(function(p) { return p.type !== 'subscription'; });
         var sorted = subscription.concat(topup);
 
-        // Card destaque = segundo plano de assinatura (ou o do meio se só houver 1)
+        // Card destaque = segundo plano de assinatura (ou o único, se só houver 1)
         var featuredIdx = subscription.length >= 2 ? 1 : 0;
+        // Selo "Mais popular" só faz sentido quando há mais de um plano pra comparar
+        var showBadge = sorted.length > 1;
+
+        // Com poucos cards, centraliza em vez de encostar à esquerda
+        grid.classList.toggle('plans-few', sorted.length < 3);
 
         grid.innerHTML = sorted.map(function(plan, i) {
           var isSubscription = plan.type === 'subscription';
+          var isUnlimited = plan.unlimited === true;
           var featured = isSubscription && (i === featuredIdx);
 
-          var badgeHtml = featured ? '<div class="plan-badge">Mais popular</div>' : '';
+          var badgeHtml = featured && showBadge ? '<div class="plan-badge">Mais popular</div>' : '';
           var annualHtml = plan.annualDiscountPct > 0
             ? '<div class="plan-annual">▼ ' + plan.annualDiscountPct + '% no plano anual</div>'
             : '';
-          var credits = plan.monthlyTokens || plan.credits;
-          var promoActive = plan.promoActive === true;
-          var promoBadgeHtml = promoActive
-            ? '<div class="plan-promo">🔥 -' + plan.promoDiscountPct + '% até ' + fmtShortDate(plan.promoEndAt) + '</div>'
-            : '';
+          var credits = plan.monthlyTokens || plan.credits || 0;
+
+          // Preço: com promoção ativa mostra o cheio riscado + o com desconto
+          var priceLabel = isSubscription ? '<span>/mês</span>' : '';
+          var promoPct = plan.promoActive ? (plan.promoDiscountPct || 0) : 0;
+          var priceHtml;
+          if (promoPct > 0) {
+            var promoPrice = plan.price * (1 - promoPct / 100);
+            var promoUntil = plan.promoEndAt
+              ? ' até ' + new Date(plan.promoEndAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
+              : '';
+            priceHtml =
+              '<div class="plan-price-old">' + fmt(plan.price) + '</div>' +
+              '<div class="plan-price">' + fmt(promoPrice) + priceLabel + '</div>' +
+              '<div class="plan-promo">-' + promoPct + '%' + promoUntil + '</div>';
+          } else {
+            priceHtml = '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>';
+          }
+
+          // Quantidade: ilimitado, pedidos por mês (assinatura) ou tokens avulsos
+          var creditsHtml = isUnlimited
+            ? '<div class="plan-credits"><strong>Pedidos ilimitados</strong></div>'
+            : isSubscription
+              ? '<div class="plan-credits">Até <strong>' + credits.toLocaleString('pt-BR') + ' pedidos</strong> por mês</div>'
+              : '<div class="plan-credits"><strong>' + credits.toLocaleString('pt-BR') + ' tokens</strong> avulsos</div>';
+
+          // Expiração: não se aplica a plano ilimitado
+          var expiryHtml = isUnlimited
+            ? ''
+            : isSubscription
+              ? '<div class="plan-expiry expiry-monthly">⏱ Saldo renova a cada ciclo mensal</div>'
+              : '<div class="plan-expiry expiry-never">∞ Tokens não expiram</div>';
 
           // Features: assinatura tem lista completa, avulso é mais simples
           var featuresHtml = isSubscription
-            ? FEATURES.map(function(f) {
-                return '<div class="plan-feature"><span class="plan-feature-icon">✓</span>' + f + '</div>';
-              }).join('')
-            : '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Geração automática de arte</div>' +
-              '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Fila de impressão</div>' +
-              '<div class="plan-feature"><span class="plan-feature-icon">✓</span>Suporte via WhatsApp</div>';
+            ? (isUnlimited ? UNLIMITED_FEATURES : ['Geração automática de arte']).concat(FEATURES).map(featureHtml).join('')
+            : ['Geração automática de arte', 'Fila de impressão', 'Suporte via WhatsApp'].map(featureHtml).join('');
 
-          var priceLabel = isSubscription ? '<span>/mês</span>' : '';
           var periodHtml = isSubscription
             ? '<div class="plan-period">cobrado mensalmente</div>'
             : '<div class="plan-period">pagamento único</div>';
-          var priceHtml = promoActive
-            ? '<div class="plan-price"><span class="plan-price-old">' + fmt(plan.price) + '</span>' + fmt(plan.price * (1 - plan.promoDiscountPct / 100)) + priceLabel + '</div>'
-            : '<div class="plan-price">' + fmt(plan.price) + priceLabel + '</div>';
 
           return '<div class="plan-card reveal' + (featured ? ' featured' : '') + '">' +
             badgeHtml +
             '<div class="plan-name">' + plan.name + '</div>' +
-            promoBadgeHtml +
             priceHtml +
             periodHtml +
             (annualHtml ? annualHtml : '') +
-            '<div class="plan-credits">Até <strong>' + credits.toLocaleString('pt-BR') + ' pedidos</strong>' + (isSubscription ? ' por mês' : ' avulsos') + '</div>' +
+            creditsHtml +
+            expiryHtml +
             '<div class="plan-features">' + featuresHtml + '</div>' +
             '<a href="https://app.festaprint.com.br/subscribe?plan=' + plan.id + '" class="btn ' + (featured ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center;">' +
             (isSubscription ? 'Assinar agora →' : 'Comprar tokens →') + '</a>' +
@@ -672,10 +722,7 @@
 
       // Planos de fallback (usados se a API não responder)
       var FALLBACK_PLANS = [
-        { id: 'PLAN-BNEQH', name: 'PLANO INICIAL',      price: 60,   credits: 100,  monthlyTokens: 100,  annualDiscountPct: 0, type: 'subscription' },
-        { id: 'PLAN-ID4NK', name: 'PLANO AVANÇADO',     price: 250,  credits: 500,  monthlyTokens: 500,  annualDiscountPct: 0, type: 'subscription' },
-        { id: 'PLAN-437BS', name: 'PLANO PROFISSIONAL', price: 450,  credits: 1000, monthlyTokens: 1000, annualDiscountPct: 0, type: 'subscription' },
-        { id: 'PLAN-44FB1', name: 'PLANO EMPRESARIAL',  price: 2000, credits: 5000, monthlyTokens: 5000, annualDiscountPct: 0, type: 'subscription' },
+        { id: 'PLAN-KUJ8H', name: 'MENSAL ILIMITADO', price: 117, credits: 0, monthlyTokens: null, annualDiscountPct: 0, type: 'subscription', unlimited: true, promoActive: false },
       ];
 
       fetch('https://app.festaprint.com.br/api/public/plans')
